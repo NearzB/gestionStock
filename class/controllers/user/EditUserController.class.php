@@ -9,8 +9,8 @@
 namespace gestionStock\controllers\user;
 
 use gestionStock\DAO\user\MysqlUserDao;
-use gestionStock\exceptions\user\InvalidActionException;
-use gestionStock\exceptions\user\InvalidDataException;
+use gestionStock\exceptions\InvalidActionException;
+use gestionStock\exceptions\InvalidDataException;
 use gestionStock\utils\ErrorMessageManager;
 use gestionStock\utils\MysqlConnection;
 use gestionStock\views\user\EditUserView;

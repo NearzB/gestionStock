@@ -6,11 +6,11 @@
  * Time: 16:59
  */
 
-namespace gestionUser\controllers\user;
+namespace gestionStock\controllers\user;
 
 use gestionStock\controllers\IController;
 use gestionStock\DAO\user\MysqlUserDao;
-use gestionStock\exceptions\user\InvalidActionException;
+use gestionStock\exceptions\InvalidActionException;
 use gestionStock\utils\ErrorMessageManager;
 use gestionStock\utils\MysqlConnection;
 use gestionStock\views\user\HomeView;

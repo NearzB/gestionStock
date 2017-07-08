@@ -11,7 +11,7 @@ namespace gestionStock\controllers\user;
 
 use gestionStock\DAO\user\MysqlUserDao;
 use gestionStock\entities\user\user;
-use gestionStock\exceptions\user\InvalidDataException;
+use gestionStock\exceptions\InvalidDataException;
 use gestionStock\utils\MysqlConnection;
 use gestionStock\views\user\CreateUserView;
 use gestionStock\views\user\HomeView;
