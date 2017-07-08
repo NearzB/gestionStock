@@ -34,15 +34,15 @@ class EditUserController extends AlterUserController implements IController
 
 
             $pdo = MysqlConnection::getConnection();
-            $stockDao = new MysqlUserDao($pdo);
+            $userDao = new MysqlUserDao($pdo);
 
 
-            $stock = $stockDao->findById($id);
+            $user = $userDao->findById($id);
 
-            if ($stock === null)
+            if ($user === null)
                 throw new InvalidActionException("Impossible de retrouver la pièce avec son id" . $id);
 
-            $data['stock'] = $stock;
+            $data['user'] = $user;
 
             if (!isset($_POST['id']))
             {
@@ -53,7 +53,7 @@ class EditUserController extends AlterUserController implements IController
 
 
             //On a soumis le formulaire
-            $invalidFields = $this->validPostedDataAndSet($stock);
+            $invalidFields = $this->validPostedDataAndSet($user);
 
 
             if (count($invalidFields) > 0)
@@ -62,7 +62,7 @@ class EditUserController extends AlterUserController implements IController
             else
             {
                 $isTransactioStarted = $pdo->beginTransaction();
-                $stockDao->insertOrUpdate($stock);
+                $userDao->insertOrUpdate($user);
                 $pdo->commit();
 
                 header("Location: " . $_SERVER["REQUEST_SCHEME"] . '://' . $_SERVER["HTTP_HOST"]);

@@ -13,7 +13,6 @@ use gestionStock\DAO\user\MysqlUserDao;
 use gestionStock\exceptions\InvalidActionException;
 use gestionStock\utils\ErrorMessageManager;
 use gestionStock\utils\MysqlConnection;
-use gestionStock\views\user\HomeView;
 use gestionStock\views\user\ConfirmUserDeletionView;
 
 class DeleteUserController implements IController
@@ -45,7 +44,7 @@ class DeleteUserController implements IController
 
             if (!isset($_POST['confirmed'])) {
                 $view = new ConfirmUserDeletionView();
-                $view->showView(array('stock' => $user));
+                $view->showView(array('user' => $user));
                 //return;
             }
 
