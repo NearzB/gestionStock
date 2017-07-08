@@ -20,7 +20,7 @@ class EditUserView extends AView implements IView
 
     protected  function getTitle()
     {
-        return "Modifier User";
+        return "Modifier Utilisateur";
     }
 
 }

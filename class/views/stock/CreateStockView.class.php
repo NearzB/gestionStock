@@ -20,7 +20,7 @@ class CreateStockView extends AView implements IView
 
     protected  function getTitle()
     {
-        return "Create stock";
+        return "Ajouter Pièce";
     }
 
 }

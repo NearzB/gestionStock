@@ -21,7 +21,7 @@ class CreateUserView extends AView implements IView
 
     protected  function getTitle()
     {
-        return "Create user";
+        return "Créer Nouvel Utilisateur";
     }
 
 }

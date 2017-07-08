@@ -13,7 +13,7 @@ class ConfirmUserDeletionView extends AView implements IView
 
     protected  function getTitle()
     {
-        return "Confirmation Suppression";
+        return "Confirmer Suppression";
     }
 
 }
