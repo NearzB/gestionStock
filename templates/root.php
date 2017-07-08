@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title><?php echo $title ?></title>
-    <link rel="Stylesheet" href="/gestionStock/design.css"/>
+    <link rel="Stylesheet" href="design.css"/>
 </head>
 <body>
 <nav>
