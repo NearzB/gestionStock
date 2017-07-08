@@ -8,6 +8,7 @@
 
 namespace gestionStock\entities\stock;
 
+use gestionStock\entities\fournisseur\Fournisseur;
 
 class stock
 {
@@ -40,6 +41,10 @@ class stock
      * @var double
      */
     private $prixVente;
+    /**
+     * @var Fournisseur
+     */
+    private $fournisseur;
     /**
      * @var string
      */
@@ -78,7 +83,7 @@ class stock
      */
     public function setNumPiece($numPiece)
     {
-        $this->numPiece = $numPiece;
+        $this->numPiece = (int)$numPiece;
     }
 
 
@@ -112,9 +117,30 @@ class stock
      */
     public function setPrixVente($prixVente)
     {
-        $this->prixAVente = $prixVente;
+        $prixVente=(float)$prixVente;
+        if($prixVente>999999){
+            $prixVente="";
+        }else{
+            $this->prixVente = (float)$prixVente;
+        }
+        
     }
 
+    /**
+     * @return Fournisseur
+     */
+    public function getFournisseur()
+    {
+        return $this->fournisseur;
+    }
+
+    /**
+     * @param Fournisseur $fournisseur
+     */
+    public function setFournisseur(Fournisseur $fournisseur)
+    {
+        $this->fournisseur=$fournisseur;
+    }
 
     /**
      * @return string
@@ -159,7 +185,13 @@ class stock
      */
     public function setPrixAchat($prixAchat)
     {
-        $this->prixAchat = $prixAchat;
+        $prixAchat=(float)$prixAchat;
+        if($prixAchat>999999){
+            $prixAchat="";
+        }else{
+            $this->prixAchat = (float)$prixAchat;
+        }
+        
     }
 
 }

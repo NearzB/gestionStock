@@ -3,74 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <title><?php echo $title ?></title>
-
-    <style>
-
-        .erreur, .error
-        {
-            border: solid 1px red;
-            font-weight: bold;
-            color: red;
-            border-radius: 10px;
-
-        }
-        .erreur
-        {
-            border-radius: 5px;
-            padding: 0.5em;
-        }
-        input, select
-        {
-            padding: 0.5em;
-            border-radius: 10px;
-            outline: none;
-        }
-        .user-form
-        {
-            width: 50%;
-            margin: auto;
-            border: solid 1px #000;
-            border-radius: 10px;
-            padding: 1em;
-        }
-        label, label + input, label + select
-        {
-            display: inline-block;
-            width: 45%;
-        }
-        .submit-container
-        {
-            text-align: center;
-        }
-        h1
-        {
-            text-align: center;
-        }
-        table
-        {
-            width: 80%;
-            margin: auto;
-            border: solid 1px #000;
-        }
-        td
-        {
-            text-align: center;
-        }
-        body
-        {
-            color:blue;
-            /*text-shadow: 5px 5px 5px black;*/
-            text-align:center;
-        }
-    </style>
+    <link rel="Stylesheet" href="/gestionStock/design.css"/>
 </head>
 <body>
+<nav>
+	<div id="navlogo">
+		
+	</div>
+	<ul>
+        <li><a href="index.php">HomePage</a></li>
+        <li><a href="index.php?action=home&amp;entities=client">Clients</a></li>
+		<li><a href="index.php?action=home&amp;entities=fournisseur">Fournisseurs</a></li>
+		<li><a href="index.php?action=home&amp;entities=stock">Stock</a></li>
+		<li><a href="index.php?action=home&amp;entities=user">Utilisateurs</a></li>
+	</ul>
+</nav>
+<article>
 <?php
-if(isset($error))
+if(isset($_SESSION['error']))
 {
-    echo '<div class="erreur">'.htmlentities($error).'</div>';
+    echo '<div class="erreur">'.htmlentities($_SESSION['error']).'</div>';
+    unset($_SESSION['error']);
 }
-
+if(isset($_SESSION['success']))
+{
+    echo '<div class="success">'.htmlentities($_SESSION['success']).'</div>';
+    unset($_SESSION['success']);
+}
 
 $errorMessageList = \gestionStock\utils\ErrorMessageManager::getInstance()->getMessageList();
 
@@ -91,5 +50,6 @@ if(file_exists($fileToIncludePath))
 
 
 ?>
+</article>
 </body>
 </html>

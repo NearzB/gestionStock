@@ -9,10 +9,13 @@
 namespace gestionStock\controllers\stock;
 
 use gestionStock\DAO\stock\MysqlStockDao;
-use gestionStock\entities\stock\stock;
-use gestionStock\exceptions\stock\InvalidDataException;
+use gestionStock\entities\stock\Stock;
+use gestionStock\entities\fournisseur\Fournisseur;
+use gestionStock\DAO\fournisseur\MysqlFournisseurDao;
+use gestionStock\exceptions\InvalidDataException;
 use gestionStock\utils\MysqlConnection;
 use gestionStock\views\stock\CreateStockView;
+use gestionStock\views\stock\EditStockView;
 use gestionStock\views\stock\HomeView;
 
 
@@ -20,46 +23,68 @@ class CreateStockController extends AlterStockController implements IController
 {
     public function doAction()
     {
-        $stock = new stock();
-        $data['stock'] = $stock;
+        $stock = new Stock();
         $data['stockList'] = array();
         $pdo = null;
         $isTransactioStarted = false;
         $data = array();
         try
         {
-
+            $pdo = MysqlConnection::getConnection();
+            $this->fournisseurDao=new MysqlFournisseurDao($pdo);
             if(!isset($_POST['id']))
             {
+                
+                $data['fournisseurs']=$this->fournisseurDao->findAll();
                 $view = new CreateStockView();
                 $view->showView($data);
                 return;
             }
+            $this->idsFournisseur=$this->fournisseurDao->getIds();
             $invalidFields = $this->validPostedDataAndSet($stock);
 
             if(count($invalidFields) > 0)
                 throw new InvalidDataException("Données soumises invalides", $invalidFields);
 
-            $pdo = MysqlConnection::getConnection();
-            $stockDao = new MysqlstockDao($pdo);
+            $action=($stock->getId()=="")?'ajouté':'modifié';
+            
+            $stockDao = new MysqlStockDao($pdo);
             $isTransactioStarted = $pdo->beginTransaction();
 
             $stockDao->insertOrUpdate($stock);
             $pdo->commit();
-           // header("Location: index.php");
+            $_SESSION['success']="Stock correctement $action";
+
+            header("Location: index.php?action=home&entities=stock");
 
 
 
         }
         catch (\Exception $ex)
         {
-            if($ex instanceof InvalidDataException)
+            if($ex instanceof  \PDOException && $ex->getCode() == 23000)
+            {
+                $_SESSION['error']="Cette pièce existe déjà";
+                $data['invalidFields'] = array('numPiece');
+            }else if($ex instanceof InvalidDataException)
+            {
                 $data['invalidFields'] = $ex->getInvalidData();
-
+                $_SESSION['error']=$ex->getMessage();
+            }else
+            {
+                $_SESSION['error']=$ex->getMessage();
+            }
             if($isTransactioStarted)
                 $pdo->rollBack();
 
-            $view = new CreateStockView();
+            $data['stock'] = $stock;
+            $data['fournisseurs']=$this->fournisseurDao->findAll();
+            if(!isset($_POST['id'])){
+                $view = new CreateStockView();
+            }else{
+                $view= new EditStockView();
+            }
+            
             $view->showView($data);
 
         }

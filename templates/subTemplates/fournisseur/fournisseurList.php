@@ -1,13 +1,13 @@
-<table>
+<table class="bordure">
     <thead>
     <tr>
         <th>Id</th>
         <th>Nom fournisseur</th>
         <th>Numéro de compte</th>
-        <th>Numéro Téléphone</th>
-        <th>Numéro de TVA</th>
         <th>Numéro de téléphone</th>
+        <th>Numéro de TVA</th>
         <th>Adresse</th>
+        <th>Email</th>
         <th colspan="2">Actions</th>
     </tr>
     </thead>
@@ -30,13 +30,12 @@
             <td><?php echo htmlentities ($fournisseur->getNumeroTva());?></td>
             <td><?php echo htmlentities ($fournisseur->getAdresse());?></td>
             <td><?php echo htmlentities ($fournisseur->getEmail());?></td>
-            <td><a href="index.php?action=edit&amp;entities=fournisseur&amp;id=<?php  echo htmlentities($fournisseur->getId(), ENT_QUOTES) ?>/">Mettre à jour</a></td>
-            <td><a href="index.php?action=delete&amp;entities=fournisseur&amp;id=<?php echo htmlentities($fournisseur->getId(), ENT_QUOTES) ?>/">Supprimer</a></td>
+            <td><a href="index.php?action=edit&amp;entities=fournisseur&amp;id=<?php  echo htmlentities($fournisseur->getId(), ENT_QUOTES) ?>">Mettre à jour</a></td>
+            <td><a href="index.php?action=delete&amp;entities=fournisseur&amp;id=<?php echo htmlentities($fournisseur->getId(), ENT_QUOTES) ?>">Supprimer</a></td>
 
         </tr>
         <?php
     endfor;
     ?>
-    <a href="index.php?action=Homepage">Home</a>
     </tbody>
 </table>

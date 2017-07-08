@@ -9,7 +9,9 @@
 namespace gestionStock\DAO\stock;
 
 
-use gestionStock\entities\stock\stock;
+use gestionStock\entities\stock\Stock;
+use gestionStock\entities\fournisseur\Fournisseur;
+use gestionStock\DAO\fournisseur\MysqlFournisseurDao;
 
 class MysqlStockDao implements IStockDao
 {
@@ -17,6 +19,7 @@ class MysqlStockDao implements IStockDao
      * @var \PDO
      */
     private $pdo;
+    private $fournisseurDao;
 
     public function __construct(\PDO $pdo)
     {
@@ -37,7 +40,7 @@ class MysqlStockDao implements IStockDao
 
     }
 
-    /**gueuning
+    /**
      * @param Stock $stock
      * @return void
      * @throws \PDOException
@@ -45,18 +48,18 @@ class MysqlStockDao implements IStockDao
     private function insert(Stock $stock)
     {
 
-        $sql = "INSERT INTO gueuning.stock (id, numPiece, nomPiece, prixAchat, prixVente, emplacement) 
-                  VALUES (null, :numPiece, :nomPiece, :prixAchat, :prixVente,:emplacement);";
+        $sql = "INSERT INTO gestionstock.stock (id, numPiece, nomPiece, prixAchat, prixVente, idFournisseur, emplacement) 
+                  VALUES (null, :numPiece, :nomPiece, :prixAchat, :prixVente,:idFournisseur,:emplacement)";
 
         $preparedStatement = $this->pdo->prepare($sql);
-        $preparedStatement->bindValue(':numPiece', $stock->getNumPiece(), \PDO::PARAM_STR);
+        $preparedStatement->bindValue(':numPiece', $stock->getNumPiece(), \PDO::PARAM_INT);
         $preparedStatement->bindValue(':nomPiece', $stock->getNomPiece(), \PDO::PARAM_STR);
-        $preparedStatement->bindValue(':prixAchat', $stock->getPrixAchat(), \PDO::PARAM_STR);
-        $preparedStatement->bindValue(':prixVente', $stock->getPrixVente(), \PDO::PARAM_STR);
+        $preparedStatement->bindValue(':prixAchat', $stock->getPrixAchat());
+        $preparedStatement->bindValue(':prixVente', $stock->getPrixVente());
+        $preparedStatement->bindValue(':idFournisseur', $stock->getFournisseur()->getId(), \PDO::PARAM_INT);
         $preparedStatement->bindValue(':emplacement', $stock->getEmplacement(), \PDO::PARAM_STR);
 
         $preparedStatement->execute();
-
         $lastId = $this->pdo->lastInsertId();
         $stock->setId($lastId);
 
@@ -70,13 +73,14 @@ class MysqlStockDao implements IStockDao
     private function update(Stock $stock)
     {
 
-        $sql = "UPDATE gueuning.stock SET numPiece = :numPiece, nomPiece = :nomPiece, prixAchat = :prixAchat, prixVente = :prixVente, emplacement = :emplacement WHERE id = :id LIMIT 1";
+        $sql = "UPDATE gestionstock.stock SET numPiece = :numPiece, nomPiece = :nomPiece, prixAchat = :prixAchat, prixVente = :prixVente, idFournisseur=:idFournisseur, emplacement = :emplacement WHERE id = :id LIMIT 1";
 
         $preparedStatement = $this->pdo->prepare($sql);
-        $preparedStatement->bindValue(':numPiece', $stock->getNumPiece(), \PDO::PARAM_STR);
+        $preparedStatement->bindValue(':numPiece', $stock->getNumPiece(), \PDO::PARAM_INT);
         $preparedStatement->bindValue(':nomPiece', $stock->getNomPiece(), \PDO::PARAM_STR);
-        $preparedStatement->bindValue(':prixAchat', $stock->getPrixAchat(), \PDO::PARAM_STR);
-        $preparedStatement->bindValue(':prixVente', $stock->getPrixVente(), \PDO::PARAM_STR);
+        $preparedStatement->bindValue(':prixAchat', $stock->getPrixAchat());
+        $preparedStatement->bindValue(':prixVente', $stock->getPrixVente());
+        $preparedStatement->bindValue(':idFournisseur', $stock->getFournisseur()->getId(), \PDO::PARAM_INT);
         $preparedStatement->bindValue(':emplacement', $stock->getEmplacement(), \PDO::PARAM_STR);
         $preparedStatement->bindValue(':id', $stock->getId(), \PDO::PARAM_INT);
 
@@ -96,7 +100,7 @@ class MysqlStockDao implements IStockDao
         if($stock->getId() === null)
             throw new \LogicException("L'id ne peut être null");
 
-        $sql = "DELETE FROM gueuning.stock  WHERE id = :id LIMIT 1";
+        $sql = "DELETE FROM gestionstock.stock  WHERE id = :id LIMIT 1";
 
         $preparedStatement = $this->pdo->prepare($sql);
 
@@ -114,7 +118,7 @@ class MysqlStockDao implements IStockDao
      */
     public function findById($id)
     {
-        $sql = "SELECT * FROM gueuning.stock  WHERE id = :id LIMIT 1";
+        $sql = "SELECT * FROM gestionstock.stock  WHERE id = :id LIMIT 1";
         $preparedStatement = $this->pdo->prepare($sql);
         $preparedStatement->bindValue(':id', $id, \PDO::PARAM_INT);
 
@@ -135,7 +139,7 @@ class MysqlStockDao implements IStockDao
      */
     public function findAll()
     {
-        $sql = "SELECT * FROM gueuning.stock ORDER BY numPiece ASC";
+        $sql = "SELECT * FROM gestionstock.stock ORDER BY numPiece ASC";
         $statement = $this->pdo->query($sql);
 
         $stockList = [];
@@ -157,12 +161,19 @@ class MysqlStockDao implements IStockDao
         $stock->setNomPiece($row['nomPiece']);
         $stock->setPrixAchat($row['prixAchat']);
         $stock->setPrixVente($row['prixVente']);
+        $stock->setFournisseur($this->getFournisseurDao()->findById($row['idFournisseur']));
         $stock->setEmplacement($row['emplacement']);
 
         return $stock;
 
     }
 
+    private function getFournisseurDao(){
+        if($this->fournisseurDao==null){
+            $this->fournisseurDao=new MysqlFournisseurDao($this->pdo);
+        }
+        return $this->fournisseurDao;
+    }
 
 
 }

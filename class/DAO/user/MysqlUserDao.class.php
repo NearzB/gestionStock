@@ -37,7 +37,7 @@ class MysqlUserDao implements IUserDao
 
     }
 
-    /**gueuning
+    /**
      * @param User $user
      * @return void
      * @throws \PDOException
@@ -45,7 +45,7 @@ class MysqlUserDao implements IUserDao
     private function insert(User $user)
     {
 
-        $sql = "INSERT INTO gueuning.user (id, nom, prenom, identifiant, password, email) 
+        $sql = "INSERT INTO gestionstock.user (id, nom, prenom, identifiant, password, email) 
                   VALUES (null, :nom, :prenom, :identifiant, :password, :email);";
 
         $preparedStatement = $this->pdo->prepare($sql);
@@ -70,7 +70,7 @@ class MysqlUserDao implements IUserDao
     private function update(User $user)
     {
 
-        $sql = "UPDATE gueuning.user SET nom = :nom, prenom = :prenom, identifiant = :identifiant, password = :password, email = :email WHERE id = :id LIMIT 1";
+        $sql = "UPDATE gestionstock.user SET nom = :nom, prenom = :prenom, identifiant = :identifiant, password = :password, email = :email WHERE id = :id LIMIT 1";
 
         $preparedStatement = $this->pdo->prepare($sql);
         $preparedStatement->bindValue(':nom', $user->getNom(), \PDO::PARAM_STR);
@@ -96,7 +96,7 @@ class MysqlUserDao implements IUserDao
         if($user->getId() === null)
             throw new \LogicException("id can't be null");
 
-        $sql = "DELETE FROM gueuning.user  WHERE id = :id LIMIT 1";
+        $sql = "DELETE FROM gestionstock.user  WHERE id = :id LIMIT 1";
 
         $preparedStatement = $this->pdo->prepare($sql);
 
@@ -114,7 +114,7 @@ class MysqlUserDao implements IUserDao
      */
     public function findById($id)
     {
-        $sql = "SELECT * FROM gueuning.user  WHERE id = :id LIMIT 1";
+        $sql = "SELECT * FROM gestionstock.user  WHERE id = :id LIMIT 1";
         $preparedStatement = $this->pdo->prepare($sql);
         $preparedStatement->bindValue(':id', $id, \PDO::PARAM_INT);
 
@@ -135,7 +135,7 @@ class MysqlUserDao implements IUserDao
      */
     public function findAll()
     {
-        $sql = "SELECT * FROM gueuning.user ORDER BY nom ASC";
+        $sql = "SELECT * FROM gestionstock.user ORDER BY nom ASC";
         $statement = $this->pdo->query($sql);
 
         $userList = [];
@@ -150,7 +150,7 @@ class MysqlUserDao implements IUserDao
 
     public function findByEmail($email)
     {
-        $sql = "SELECT * FROM gueuning.user  WHERE email = :email LIMIT 1";
+        $sql = "SELECT * FROM gestionstock.user  WHERE email = :email LIMIT 1";
         $preparedStatement = $this->pdo->prepare($sql);
         $preparedStatement->bindValue(':email', $email, \PDO::PARAM_INT);
 

@@ -37,7 +37,7 @@ class MysqlClientDao implements IClientDao
 
     }
 
-    /**gueuning
+    /**
      * @param Client $client
      * @return void
      * @throws \PDOException
@@ -45,7 +45,7 @@ class MysqlClientDao implements IClientDao
     private function insert(Client $client)
     {
 
-        $sql = "INSERT INTO gueuning.client (id, nomClient, adresseMailClient, numeroCompte, numeroTva, numeroTel, adresseClient) 
+        $sql = "INSERT INTO gestionstock.client (id, nomClient, adresseMailClient, numeroCompte, numeroTva, numeroTel, adresseClient) 
                   VALUES (null, :nomClient, :adresseMailClient, :numeroCompte, :numeroTva, :numeroTel, :adresseClient);";
 
         $preparedStatement = $this->pdo->prepare($sql);
@@ -71,7 +71,7 @@ class MysqlClientDao implements IClientDao
     private function update(Client $client)
     {
 
-        $sql = "UPDATE gueuning.client SET nomClient = :nomClient, adresseMailClient = :adresseMailClient, numeroCompte = :numeroCompte, numeroTva = :numeroTva, numeroTel = :numeroTel, adresseClient = :adresseClient WHERE id = :id LIMIT 1";
+        $sql = "UPDATE gestionstock.client SET nomClient = :nomClient, adresseMailClient = :adresseMailClient, numeroCompte = :numeroCompte, numeroTva = :numeroTva, numeroTel = :numeroTel, adresseClient = :adresseClient WHERE id = :id LIMIT 1";
 
         $preparedStatement = $this->pdo->prepare($sql);
         $preparedStatement->bindValue(':nomClient', $client->getNomClient(), \PDO::PARAM_STR);
@@ -98,7 +98,7 @@ class MysqlClientDao implements IClientDao
         if($client->getId() === null)
             throw new \LogicException("id can't be null");
 
-        $sql = "DELETE FROM gueuning.client  WHERE id = :id LIMIT 1";
+        $sql = "DELETE FROM gestionstock.client  WHERE id = :id LIMIT 1";
 
         $preparedStatement = $this->pdo->prepare($sql);
 
@@ -116,7 +116,7 @@ class MysqlClientDao implements IClientDao
      */
     public function findById($id)
     {
-        $sql = "SELECT * FROM gueuning.client  WHERE id = :id LIMIT 1";
+        $sql = "SELECT * FROM gestionstock.client  WHERE id = :id LIMIT 1";
         $preparedStatement = $this->pdo->prepare($sql);
         $preparedStatement->bindValue(':id', $id, \PDO::PARAM_INT);
 
@@ -137,7 +137,7 @@ class MysqlClientDao implements IClientDao
      */
     public function findAll()
     {
-        $sql = "SELECT * FROM gueuning.client ORDER BY nomClient ASC";
+        $sql = "SELECT * FROM gestionstock.client ORDER BY nomClient ASC";
         $statement = $this->pdo->query($sql);
 
         $clientList = [];
@@ -152,7 +152,7 @@ class MysqlClientDao implements IClientDao
 
     public function findByAdresseMailClient($adresseMailClient)
     {
-        $sql = "SELECT * FROM gueuning.client  WHERE adresseMailClient = :adresseMailClient LIMIT 1";
+        $sql = "SELECT * FROM gestionstock.client  WHERE adresseMailClient = :adresseMailClient LIMIT 1";
         $preparedStatement = $this->pdo->prepare($sql);
         $preparedStatement->bindValue(':adresseMailClient', $adresseMailClient, \PDO::PARAM_INT);
 

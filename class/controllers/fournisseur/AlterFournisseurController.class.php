@@ -39,14 +39,14 @@ abstract class AlterFournisseurController implements IController
         }
 
 
-        $fournisseur->SetAdresse(isset($_POST['adresse']) ? trim($_POST['adresse']) : "");
+        $fournisseur->setAdresse(isset($_POST['adresse']) ? trim($_POST['adresse']) : "");
         if($fournisseur->getAdresse() == "")
         {
             $invalidFields[] = 'adresse';
         }
 
         $fournisseur->setEmail(isset($_POST['email']) ? trim($_POST['email']) : "");
-        if($fournisseur->getEmail() == "" && filter_var($fournisseur->getEmail(), FILTER_VALIDATE_EMAIL))
+        if($fournisseur->getEmail() == "" || !filter_var($fournisseur->getEmail(), FILTER_VALIDATE_EMAIL))
         {
             $invalidFields[] = 'email';
         }

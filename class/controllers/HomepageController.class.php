@@ -26,7 +26,8 @@ class HomepageController implements IController
         }
         catch (\Exception $ex)
         {
-            $data['error'] = "Service indisponible";
+            //$data['error'] = "Service indisponible";
+            $data['error'] = $ex->getMessage();
         }
         $view = new HomepageView();
         $view->showView($data);

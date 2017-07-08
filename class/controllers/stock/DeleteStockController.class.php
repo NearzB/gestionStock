@@ -9,10 +9,10 @@
 namespace gestionStock\controllers\stock;
 
 use gestionStock\DAO\stock\MysqlStockDao;
-use gestionStock\exceptions\stock\InvalidActionException;
+use gestionStock\exceptions\InvalidActionException;
 use gestionStock\utils\ErrorMessageManager;
 use gestionStock\utils\MysqlConnection;
-use gestionStock\views\stock\HomeView;
+use gestionStock\views\stock\ConfirmStockDeletionView;
 class DeleteStockController implements IController
 
 {
@@ -38,29 +38,28 @@ class DeleteStockController implements IController
             $stock = $stockDao->findById($id);
 
             if ($stock === null)
-                throw new InvalidActionException("Impossible de retrouver la pièce avec son id... " . $id);
+                throw new InvalidActionException("Impossible de retrouver la pièce avec son id.");
 
 
             if (!isset($_POST['confirmed'])) {
                 $view = new ConfirmStockDeletionView();
                 $view->showView(array('stock' => $stock));
-                //return;
+                return;
             }
 
 
             $stockDao->delete($stock);
-            ErrorMessageManager::getInstance()->addMessage("Pièce supprimée avec succes !");
-            header("Location: index.php");
+            $_SESSION['success']="Pièce correctement supprimée";
+            header("Location: index.php?action=home&entities=stock");
 
 
         } catch (\Exception $ex) {
-            $data['error'] = $ex->getMessage();
+            $_SESSION['error'] = $ex->getMessage();
 
 
             if ($isTransactioStarted)
                 $pdo->rollBack();
 
-            ErrorMessageManager::getInstance()->addMessage($ex->getMessage());
             header("Location: index.php");
             return;
 

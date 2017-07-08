@@ -10,24 +10,42 @@ if(!isset($fournisseur) || !($fournisseur instanceof Fournisseur))
 ?>
 <form action="index.php?action=create&amp;entities=fournisseur" method="post" class="user-form">
     <p>
-        <label for="nomFournisseur">Nom fournisseur</label><input <?php echo isset($invalidFields) && in_array('nomFournisseur', $invalidFields) ? 'class="error"' : ""?> type="text" required="required" name="nomFournisseur" id="nomFournisseur" value="<?php echo htmlentities($fournisseur->getNomFournisseur(), ENT_QUOTES);?>"/>
+        <label for="nomFournisseur">Nom fournisseur</label>
+        <input <?php echo isset($invalidFields) && in_array('nomFournisseur', $invalidFields) ? 'class="error"' : ""?> 
+        type="text" required="required" name="nomFournisseur" id="nomFournisseur" 
+        value="<?php echo htmlentities($fournisseur->getNomFournisseur(), ENT_QUOTES);?>"/>
     </p>
 
     <p>
-        <label for="numeroCompte">Numéro de compte</label><input <?php echo (isset($invalidFields) && in_array('numeroCompte', $invalidFields)) ? 'class="error"' : ""?>  type="text" required="required" name="numeroCompte" id="numeroCompte" value="<?php echo htmlentities($fournisseur->getNumeroCompte(), ENT_QUOTES);?>"/>
+        <label for="numeroCompte">Numéro de compte</label>
+        <input <?php echo (isset($invalidFields) && in_array('numeroCompte', $invalidFields)) ? 'class="error"' : ""?>
+          type="text" required="required" name="numeroCompte" id="numeroCompte" 
+          value="<?php echo htmlentities($fournisseur->getNumeroCompte(), ENT_QUOTES);?>"/>
     </p>
 
     <p>
-        <label for="numeroTel">Numéro de téléphone</label><input <?php echo (isset($invalidFields) && in_array('numeroTel', $invalidFields)) ? 'class="error"' : ""?>  type="text" required="required" name="numeroTel" id="numeroTel" value="<?php echo htmlentities($fournisseur->getNumeroTel(), ENT_QUOTES);?>"/>
+        <label for="numeroTel">Numéro de téléphone</label>
+        <input <?php echo (isset($invalidFields) && in_array('numeroTel', $invalidFields)) ? 'class="error"' : ""?>
+          type="text" required="required" name="numeroTel" id="numeroTel" 
+          value="<?php echo htmlentities($fournisseur->getNumeroTel(), ENT_QUOTES);?>"/>
     </p>
     <p>
-        <label for="numeroTva">Numéro de TVA</label><input <?php echo (isset($invalidFields) && in_array('numeroTva', $invalidFields)) ? 'class="error"' : ""?>  type="text" required="required" name="numeroTva" id="numeroTva" value="<?php echo htmlentities($fournisseur->getNumeroTva(), ENT_QUOTES);?>"/>
+        <label for="numeroTVA">Numéro de TVA</label>
+        <input <?php echo (isset($invalidFields) && in_array('numeroTVA', $invalidFields)) ? 'class="error"' : ""?>  
+        type="text" required="required" name="numeroTVA" id="numeroTVA" 
+        value="<?php echo htmlentities($fournisseur->getNumeroTVA(), ENT_QUOTES);?>"/>
     </p>
     <p>
-        <label for="adresse">Adresse du Fournisseur</label><input <?php echo (isset($invalidFields) && in_array('adresse', $invalidFields)) ? 'class="error"' : ""?>  type="text" required="required" name="adresse" id="adresse" value="<?php echo htmlentities($fournisseur->getAdresse(), ENT_QUOTES);?>"/>
+        <label for="adresse">Adresse</label>
+        <input <?php echo (isset($invalidFields) && in_array('adresse', $invalidFields)) ? 'class="error"' : ""?> 
+         type="text" required="required" name="adresse" id="adresse" 
+         value="<?php echo htmlentities($fournisseur->getAdresse(), ENT_QUOTES);?>"/>
     </p>
     <p>
-        <label for="email">Adresse Email</label><input <?php echo isset($invalidFields) && in_array('adresseMailFournisseur', $invalidFields) ? 'class="error"' : ""?>  type="email" required="required" name="email" id="email" value="<?php echo htmlentities($fournisseur->getEmail(), ENT_QUOTES);?>"/>
+        <label for="email">Email</label>
+        <input <?php echo (isset($invalidFields) && in_array('email', $invalidFields)) ? 'class="error"' : ""?>  
+        type="email" required="required" name="email" id="email" 
+        value="<?php echo htmlentities($fournisseur->getEmail(), ENT_QUOTES);?>"/>
     </p>
 
     <p>
@@ -36,4 +54,3 @@ if(!isset($fournisseur) || !($fournisseur instanceof Fournisseur))
     <p class="submit-container"><input type="submit" value="valider"/></p>
 
 </form>
-<a href="index.php?action=Homepage">Home</a>

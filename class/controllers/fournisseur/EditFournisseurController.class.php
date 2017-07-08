@@ -9,8 +9,8 @@
 namespace gestionStock\controllers\fournisseur;
 
 use gestionStock\DAO\fournisseur\MysqlFournisseurDao;
-use gestionStock\exceptions\fournisseur\InvalidActionException;
-use gestionStock\exceptions\fournisseur\InvalidDataException;
+use gestionStock\exceptions\InvalidActionException;
+use gestionStock\exceptions\InvalidDataException;
 use gestionStock\utils\ErrorMessageManager;
 use gestionStock\utils\MysqlConnection;
 use gestionStock\views\fournisseur\EditFournisseurView;
@@ -35,38 +35,19 @@ class EditFournisseurController extends AlterFournisseurController implements IC
 
 
             $pdo = MysqlConnection::getConnection();
-            $clientDao = new MysqlFournisseurDao($pdo);
+            $fournisseurDao = new MysqlFournisseurDao($pdo);
 
 
-            $fournisseur = $clientDao->findById($id);
+            $fournisseur = $fournisseurDao->findById($id);
 
             if ($fournisseur === null)
-                throw new InvalidActionException("Impossible de retouver l'id du fournisseur" . $id);
+                throw new InvalidActionException("Impossible de retrouver l'id du fournisseur ");
 
             $data['fournisseur'] = $fournisseur;
+            
 
-            if (!isset($_POST['id']))
-            {
-                $view = new EditFournisseurView();
-                $view->showView($data);
-                return;
-            }
-
-
-            //On a soumis le formulaire
-            $invalidFields = $this->validPostedDataAndSet($fournisseur);
-
-
-            if (count($invalidFields) > 0)
-                throw new InvalidDataException("Données soumises invalides", $invalidFields);
-
-
-                $isTransactioStarted = $pdo->beginTransaction();
-                $clientDao->insertOrUpdate($fournisseur);
-                $pdo->commit();
-
-
-                header("Location: " . $_SERVER["REQUEST_SCHEME"] . '://' . $_SERVER["HTTP_HOST"]);
+            $view = new EditFournisseurView();
+            $view->showView($data);
 
 
         }
@@ -74,26 +55,21 @@ class EditFournisseurController extends AlterFournisseurController implements IC
         {
             if ($ex instanceof InvalidActionException) {
                 ErrorMessageManager::getInstance()->addMessage($ex->getMessage());
-                header("Location: index.php");
+                header("Location: index.php?action=home&entities=fournisseur");
                 return;
             }
 
-            if ($ex instanceof \PDOException && $ex->getCode() == 23000)
+            if ($ex instanceof \PDOException)
             {
-                $data['error'] = "The email already exists";
-                $data['invalidFields'] = array("email");
+                $_SESSION['error'] = "Service indisponible";
             } else
-                $data['error'] = $ex->getMessage();
-
-            if ($ex instanceof InvalidDataException)
-                $data['invalidFields'] = $ex->getInvalidData();
+                $_SESSION['error'] = $ex->getMessage();
 
             if ($isTransactioStarted)
                 $pdo->rollBack();
 
 
-            $view = new EditFournisseurView();
-            $view->showView($data);
+            header("Location: index.php");
 
 
         }

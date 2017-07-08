@@ -1,5 +1,5 @@
 <?php
-namespace gestionStock\exceptions\user;
+namespace gestionStock\exceptions;
 
 class InvalidActionException extends \Exception
 {

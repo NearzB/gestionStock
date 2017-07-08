@@ -1,4 +1,4 @@
-<table>
+<table class="bordure">
     <thead>
     <tr>
         <th>Id</th>
@@ -6,7 +6,7 @@
         <th>Nom de pièce</th>
         <th>Prix d'achat</th>
         <th>Prix de vente</th>
-        <th>Numéro de téléphone</th>
+        <th>Fournisseur</th>
         <th>Localisation</th>
         <th colspan="2">Actions</th>
     </tr>
@@ -28,14 +28,14 @@
             <td><?php echo htmlentities ($stock->getNomPiece());?></td>
             <td><?php echo htmlentities ($stock->getPrixAchat());?></td>
             <td><?php echo htmlentities ($stock->getPrixVente());?></td>
+            <td><?php echo htmlentities ($stock->getFournisseur()->getNomFournisseur());?></td>
             <td><?php echo htmlentities ($stock->getEmplacement());?></td>
-            <td><a href="index.php?action=edit&amp;entities=stock&amp;id=<?php  echo htmlentities($stock->getId(), ENT_QUOTES) ?>/">Mettre à jour</a></td>
-            <td><a href="index.php?action=delete&amp;entities=stock&amp;id=<?php echo htmlentities($stock->getId(), ENT_QUOTES) ?>/">Supprimer</a></td>
+            <td><a href="index.php?action=edit&amp;entities=stock&amp;id=<?php  echo htmlentities($stock->getId(), ENT_QUOTES) ?>">Mettre à jour</a></td>
+            <td><a href="index.php?action=delete&amp;entities=stock&amp;id=<?php echo htmlentities($stock->getId(), ENT_QUOTES) ?>">Supprimer</a></td>
 
         </tr>
         <?php
     endfor;
     ?>
-    <a href="index.php?action=Homepage">Home</a>
     </tbody>
 </table>

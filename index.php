@@ -3,7 +3,6 @@ session_start();
 require_once __DIR__.DIRECTORY_SEPARATOR.'class'.DIRECTORY_SEPARATOR.'autoloader.php';
 if(isset($_GET['entities']))
 {
-    echo $_GET['entities'];
     if($_GET['entities']=='client')
     {
         $entities='client';

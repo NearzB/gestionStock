@@ -1,5 +1,5 @@
 <?php
-namespace gestionStock\exceptions\fournisseur;
+namespace gestionStock\exceptions;
 
 class InvalidDataException extends \Exception
 {

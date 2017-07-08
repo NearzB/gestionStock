@@ -1,22 +1,27 @@
 <?php
 /**
  * Created by PhpStorm.
- * User: Unknown
- * Date: 28/06/2017
- * Time: 21:11
+ * Stock: Unknown
+ * Date: 20/06/2017
+ * Time: 15:04
  */
 
 namespace gestionStock\controllers\stock;
 
 use gestionStock\DAO\stock\MysqlStockDao;
-use gestionStock\exceptions\stock\InvalidActionException;
-use gestionStock\exceptions\stock\InvalidDataException;
+use gestionStock\DAO\fournisseur\MysqlFournisseurDao;
+use gestionStock\entities\fournisseur\Fournisseur;
+use gestionStock\exceptions\InvalidActionException;
+use gestionStock\exceptions\InvalidDataException;
 use gestionStock\utils\ErrorMessageManager;
 use gestionStock\utils\MysqlConnection;
 use gestionStock\views\stock\EditStockView;
 use gestionStock\views\stock\HomeView;
+
+
 class EditStockController extends AlterStockController implements IController
 {
+
     public function doAction()
     {
         $data = array();
@@ -38,54 +43,39 @@ class EditStockController extends AlterStockController implements IController
             $stock = $stockDao->findById($id);
 
             if ($stock === null)
-                throw new InvalidActionException("Impossible de retrouver la pièce avec son id" . $id);
+                throw new InvalidActionException("Impossible de retrouver l'id du stock ");
 
             $data['stock'] = $stock;
-
-            if (!isset($_POST['id']))
-            {
-                $view = new EditStockView();
-                $view->showView($data);
-                return;
-            }
-
-
-            //On a soumis le formulaire
-            $invalidFields = $this->validPostedDataAndSet($stock);
-
-
-            if (count($invalidFields) > 0)
-                throw new InvalidDataException("Données soumises invalides", $invalidFields);
-
-            else
-            {
-                $isTransactioStarted = $pdo->beginTransaction();
-                $stockDao->insertOrUpdate($stock);
-                $pdo->commit();
-
-                header("Location: " . $_SERVER["REQUEST_SCHEME"] . '://' . $_SERVER["HTTP_HOST"]);
-            }
-
-        }
-        catch (\Exception $ex) {
-            if ($ex instanceof InvalidActionException) {
-                ErrorMessageManager::getInstance()->addMessage($ex->getMessage());
-                header("Location: index.php");
-                return;
-            }
-
-            if ($ex instanceof InvalidDataException)
-                $data['invalidFields'] = $ex->getInvalidData();
-
-            if ($isTransactioStarted)
-                $pdo->rollBack();
-
+            
+            $fournisseurDao=new MysqlFournisseurDao($pdo);
+            $data['fournisseurs']=$fournisseurDao->findAll();
 
             $view = new EditStockView();
             $view->showView($data);
 
 
         }
+        catch (\Exception $ex)
+        {
+            if ($ex instanceof InvalidActionException) {
+                ErrorMessageManager::getInstance()->addMessage($ex->getMessage());
+                header("Location: index.php?action=home&entities=stock");
+                return;
+            }
+
+            if ($ex instanceof \PDOException)
+            {
+                $_SESSION['error'] = "Service indisponible";
+            } else
+                $_SESSION['error'] = $ex->getMessage();
+
+            if ($isTransactioStarted)
+                $pdo->rollBack();
+
+
+            header("Location: index.php");
+
+
+        }
     }
 }
-

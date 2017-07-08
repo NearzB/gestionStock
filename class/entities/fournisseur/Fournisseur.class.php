@@ -156,7 +156,7 @@ class Fournisseur
      */
     public function setAdresse($adresse)
     {
-        $this->adresseClient = $adresse;
+        $this->adresse = $adresse;
     }
 
     /**
